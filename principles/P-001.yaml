@@ -1,0 +1,9 @@
+id: P-001
+name: 상승추세 속 과매도 반등
+hypothesis: >
+  종가가 60일 이동평균 위에 있는 종목의 RSI(14)가 30 미만이 되면,
+  다음 날 시가에 사서 5거래일 보유했을 때 비용을 뺀 초과수익률(코스피 대비)은 0보다 크다.
+# 오늘 종가 기준으로 판정한다. 쓸 수 있는 지표: smaN, rsiN, vol_ratioN, retN, close, open, volume
+entry: "close > sma60 and rsi14 < 30"
+horizon_days: 5        # 검정의 보유 기간 = 운영에서 매도 후보가 되는 시점
+position_size: 0.05    # 검정이 가정한 1회 매수 비중 = 가드레일 G06과 같아야 한다

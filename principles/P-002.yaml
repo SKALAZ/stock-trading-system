@@ -1,0 +1,8 @@
+id: P-002
+name: 거래량 동반 추세 돌파
+hypothesis: >
+  20일선이 60일선 위에 있고 종가가 20일선 위인 종목이 거래량을 평소의 2배 이상 동반해
+  하루 3% 이상 오르면, 다음 날 시가에 사서 10거래일 보유했을 때 비용을 뺀 초과수익률은 0보다 크다.
+entry: "close > sma20 and sma20 > sma60 and vol_ratio20 >= 2 and ret1 >= 0.03"
+horizon_days: 10
+position_size: 0.05

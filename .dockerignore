@@ -1,0 +1,13 @@
+# 빌드 컨텍스트에서 비밀·데이터·의존성 폴더를 뺀다 (.env 는 절대 이미지에 들어가면 안 된다)
+.env
+.env.*
+!.env.example
+.venv/
+**/node_modules/
+**/dist/
+**/__pycache__/
+.pytest_cache/
+data/
+state/
+reports/
+journal.db

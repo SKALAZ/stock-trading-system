@@ -1,0 +1,31 @@
+# 모니터링 화면 띄우기:  docker compose up --build   →  http://localhost:8000
+# 화면 코드 고칠 때(저장하면 바로 반영):  docker compose --profile dev up   →  http://localhost:5173
+services:
+  monitor:
+    build:
+      context: .
+      dockerfile: monitor/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:  # 전부 읽기 전용. 화면에서는 기록을 바꾸거나 주문을 낼 수 없다
+      - ./journal.db:/app/journal.db:ro
+      - ./data:/app/data:ro
+      - ./reports:/app/reports:ro
+      - ./principles:/app/principles:ro
+      - ./config.yaml:/app/config.yaml:ro
+      - ./trader:/app/trader:ro
+
+  web-dev:
+    image: node:20-alpine
+    profiles: ["dev"]
+    working_dir: /web
+    command: sh -c "npm install --no-audit --no-fund && npm run dev -- --host 0.0.0.0"
+    environment:
+      - API_URL=http://monitor:8000
+    volumes:
+      - ./monitor/web:/web
+      - /web/node_modules
+    ports:
+      - "5173:5173"
+    depends_on:
+      - monitor

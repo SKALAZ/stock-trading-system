@@ -1,0 +1,66 @@
+/* 디자인 시안(Trading Agent Monitor, 밝은 테마)의 색·글꼴을 그대로 토큰으로 옮긴 것 */
+:root {
+  --bg: #F5F6F8;
+  --surface: #FFFFFF;
+  --panel: #F7F8FA;
+  --chip: #F0F2F5;
+  --active: #EEF0F3;
+  --line: #E3E6EB;
+  --line-2: #ECEEF2;
+  --line-3: #D5DAE1;
+  --text: #14181F;
+  --text-2: #3A4350;
+  --text-3: #4A5463;
+  --muted: #646E7D;
+  --faint: #6B7584;
+  --accent: #4D7C0F;
+  --link: #3F6212;
+  --accent-fill: #C6EE52;
+  --up: #D9363E;      /* 상승 = 빨강 */
+  --down: #2563EB;    /* 하락 = 파랑 */
+  --pass: #0F9F8C; --pass-bg: #E0F5F1; --pass-fg: #0B7A6B;
+  --clip: #A16207; --clip-bg: #FDF3DC;
+  --reject: #7C5CE0; --reject-bg: #EFEAFE; --reject-fg: #5B3CC4;
+  --buy-bg: #FDECEC; --buy-fg: #C8262E;
+  --sell-bg: #E8F0FE; --sell-fg: #1D4ED8;
+  --sans: 'IBM Plex Sans KR', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', 'IBM Plex Sans KR', ui-monospace, monospace;  /* 한글은 본문 글꼴로 */
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; line-height: 1.5; }
+a { color: var(--link); text-decoration: none; }
+a:hover { color: #1A2E05; }
+h1 { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -.02em; }
+h2 { margin: 0; font-size: 16px; font-weight: 600; }
+button { font: inherit; }
+
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 1px 2px rgba(16, 24, 40, .04); }
+.lbl { font-size: 12px; color: var(--muted); letter-spacing: .02em; }
+.muted { color: var(--muted); }
+.up { color: var(--up); }
+.down { color: var(--down); }
+
+.page { max-width: 1440px; margin: 0 auto; padding: 28px 32px 56px; display: flex; flex-direction: column; gap: 20px; }
+.row { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+.row.stretch { align-items: stretch; }
+.grow { flex: 999 1 640px; min-width: 0; }
+.side { flex: 1 1 320px; min-width: 0; }
+.pad { padding: 20px 22px; }
+.panel { padding: 14px; border-radius: 10px; background: var(--panel); border: 1px solid var(--line-2); }
+.head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 12px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.track { height: 8px; background: var(--line-2); border-radius: 4px; position: relative; }
+.track > .fill { height: 100%; border-radius: inherit; background: var(--text-2); }
+.tick { position: absolute; top: -3px; width: 2px; height: 14px; }
+.empty { padding: 28px; text-align: center; color: var(--muted); }
+.scroll-x { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { font-weight: 500; color: var(--muted); font-size: 12px; text-align: left; }
+.btn { min-height: 40px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--line-3); background: var(--surface); color: var(--text); cursor: pointer; }
+.btn.primary { border: 0; background: var(--accent-fill); font-weight: 700; }
+
+@media (max-width: 640px) {
+  .page { padding: 20px 16px 40px; }
+}

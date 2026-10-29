@@ -1,0 +1,78 @@
+# 모든 수치는 여기서 바꾼다. 코드에는 숫자를 박아 두지 않는다.
+
+market:
+  benchmark: "^KS11"          # 코스피 지수
+  data_start: "2015-01-01"
+  # 코스피 대형주 30개 (Yahoo 티커). 현재 대형주라 생존편향이 있다 → 검정 리포트에 명시됨
+  universe:
+    005930.KS: 삼성전자
+    000660.KS: SK하이닉스
+    373220.KS: LG에너지솔루션
+    207940.KS: 삼성바이오로직스
+    005380.KS: 현대차
+    000270.KS: 기아
+    068270.KS: 셀트리온
+    035420.KS: NAVER
+    005490.KS: POSCO홀딩스
+    051910.KS: LG화학
+    006400.KS: 삼성SDI
+    035720.KS: 카카오
+    105560.KS: KB금융
+    055550.KS: 신한지주
+    012330.KS: 현대모비스
+    028260.KS: 삼성물산
+    066570.KS: LG전자
+    003550.KS: LG
+    015760.KS: 한국전력
+    017670.KS: SK텔레콤
+    034730.KS: SK
+    032830.KS: 삼성생명
+    096770.KS: SK이노베이션
+    009150.KS: 삼성전기
+    086790.KS: 하나금융지주
+    033780.KS: KT&G
+    010130.KS: 고려아연
+    011200.KS: HMM
+    018260.KS: 삼성에스디에스
+    003670.KS: 포스코퓨처엠
+
+# 거래비용 (검정과 백테스트가 같은 값을 쓴다)
+costs:
+  commission: 0.00015   # 매수·매도 각각
+  sell_tax: 0.0020      # 매도 시 거래세+농특세. 현재 세율 확인 후 조정
+  slippage: 0.0010      # 매수·매도 각각
+
+# ① 원칙 검정
+test:
+  validate_start: "2023-01-01"   # 이전 = 검정 구간, 이후 = 검증 구간
+  bootstrap_trials: 10000
+  random_trials: 1000
+  seed: 42
+  # 통과 기준 (전부 충족해야 passed)
+  min_events: 50
+  alpha: 0.05                    # 검정 구간 p값
+  alpha_validate: 0.10           # 검증 구간 p값
+  random_percentile: 0.95        # 무작위 진입보다 상위 5%
+
+# ② GPT 판단 루프
+agent:
+  model: "gpt-4o-mini"
+  temperature: 0
+  max_steps: 6
+  prompt_version: "v1"
+
+# ③ 가드레일 (주문 직전)
+guardrails:
+  max_order_weight: 0.05      # G06 1회 주문 ≤ 총자산의 5%  (원칙의 position_size와 맞춘다)
+  max_position_weight: 0.10   # G07 한 종목 보유 비중 ≤ 10%
+  min_cash_weight: 0.10       # G08 현금 비중 ≥ 10%
+  max_orders_per_day: 10      # G09
+  daily_loss_stop: -0.03      # G10 당일 -3%면 신규 매수 중단 (매도는 허용)
+  stop_loss: -0.07            # F01 매수가 대비 -7%면 GPT 판단과 무관하게 매도
+
+# ④ 주문
+execution:
+  initial_cash: 100000000     # 백테스트·모의투자 시작 자금 (원)
+  live_capital: 1000000       # 실거래에서 Agent가 굴릴 수 있는 돈의 상한 (원). 계좌의 나머지 돈·종목은 건드리지 않는다
+  live_fill_timeout: 60       # 시장가 주문 후 체결 확인 대기 (초)
+  live_min_equity: 10000      # Agent 몫(현금+보유)이 이보다 작으면 판단하지 않는다 (원)
